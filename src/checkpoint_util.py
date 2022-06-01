@@ -1,5 +1,7 @@
 """
-Author: Tung Tran
+For checkpointing while training
+
+Author: 
 """
 
 import os
