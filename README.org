@@ -2,7 +2,7 @@
 
 * Setup instructions
 
-** Set up ~limitless-sequence-modeling~ repository
+** Set up repository
 #+begin_src bash
 cd $LSM_DIR
 
@@ -11,72 +11,27 @@ pip install -r requirements.txt
 
 ** Download dataset
 
-Download dataset from https://drive.google.com/file/d/1VJ4kl1VaC3DfjqdP3KLR4zIoPRfv-K1B/view?usp=sharing
+Download dataset from 
 
 Move file to directory ~$LSM_DIR/notebooks/data~
 
 ** Download finetuned model
 
-Download finetuned model from https://drive.google.com/file/d/1OVvHv-WPY7Oz_uum7ofV1yeto0sY-DrY/view?usp=sharing
+Download finetuned model from 
 
-Move file to directory ~$PACT_DIR/notebooks/models~ 
+Move file to directory ~$LSM_DIR/notebooks/models~ 
 
 * Finetune instructions
 
 #+begin_src bash
-usage: parallel_eval.py [-h] [--max_tokens MAX_TOKENS]
-                        [--temperature TEMPERATURE] [--top_p TOP_P] [--n N]
-                        [--best_of BEST_OF] [--fuel FUEL]
-                        [--engine_id ENGINE_ID] [--api_key API_KEY]
-                        [--nbest NBEST] [--beam BEAM]
-                        [--model_path MODEL_PATH] [--data_path DATA_PATH]
-                        [--entry_pt ENTRY_PT] [--max_width MAX_WIDTH]
-                        [--max_depth MAX_DEPTH] [--lean_threads LEAN_THREADS]
-                        [--lean_timeout LEAN_TIMEOUT] [--api API]
-                        [--search_strategy SEARCH_STRATEGY]
-                        [--tac_timeout TAC_TIMEOUT]
-                        [--global_timeout GLOBAL_TIMEOUT]
-                        n_workers decls_per_shard decls_file dest_dir
+usage: run_train.py [-h] [--max_tokens MAX_TOKENS]
 
 positional arguments:
-  n_workers
-  decls_per_shard
-  decls_file
   dest_dir
 
 optional arguments:
   -h, --help            show this help message and exit
   --max_tokens MAX_TOKENS
-  --temperature TEMPERATURE
-  --top_p TOP_P
-  --n N
-  --best_of BEST_OF
-  --fuel FUEL
-  --engine_id ENGINE_ID
-  --api_key API_KEY
-  --nbest NBEST
-  --beam BEAM
-  --model_path MODEL_PATH
-  --data_path DATA_PATH
-  --entry_pt ENTRY_PT
-  --max_width MAX_WIDTH
-                        maximum size of search queue for BFS
-  --max_depth MAX_DEPTH
-                        maximum distance of search node from root before the
-                        search queue rejects it
-  --lean_threads LEAN_THREADS
-                        number of threads per Lean process
-  --lean_timeout LEAN_TIMEOUT
-                        deterministic timeout for Lean process in millions of
-                        allocations. Interactive default is one. Default is
-                        unbounded (none).
-  --api API             gptf|baseline|fairseq
-  --search_strategy SEARCH_STRATEGY
-                        greedy|bfs
-  --tac_timeout TAC_TIMEOUT
-                        tactic execution timeout (s)
-  --global_timeout GLOBAL_TIMEOUT
-                        proof search timeout (s)
 #+end_src
 
 * Evaluation instructions
