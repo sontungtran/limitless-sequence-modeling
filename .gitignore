@@ -1,0 +1,16 @@
+# exclude everything except the following directories 
+/*
+!.gitignore
+!/data
+!/src
+!/test
+!/LICENSE
+!/README.org
+!/notebooks
+!run_train.py
+!run.ipynb
+__pycache__
+.ipynb_checkpoints
+.out
+.log
+
