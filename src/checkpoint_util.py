@@ -8,6 +8,10 @@ import os
 from os.path import isfile, isdir, join
 import re
 import json
+from src.model import *
+
+from transformers import RobertaTokenizer
+
 
 def save_checkpoint(model, tokenizer,
                     model_dir, name, current_config,
