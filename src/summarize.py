@@ -3,9 +3,10 @@ Summarization modules
 
 Author: 
 """
+import torch
+import torch.nn
 
-
-def summarize(t, model, labels):
+def summarize(t, model, labels, optimizer):
     if t.shape[0] == 0:
         return None
     
