@@ -175,6 +175,7 @@ class RobertaSelfAttention(nn.Module):
 #         print(f"attention_probs: {attention_probs.shape}")
         attn_sum_heads = torch.sum(attention_probs, 1)
         important_indices_list = []
+        attn_sums = []
         for i in range(attn_sum_heads.shape[0]):
             last_token_idx = torch.min(torch.nonzero(attention_mask[i].view(-1)))-1
             num_tokens = last_token_idx + 1
@@ -182,8 +183,9 @@ class RobertaSelfAttention(nn.Module):
             epsilon = 1e-10 # To account for numerical instabilities
             _, important_indices = torch.topk(attn_sum, k = int((num_tokens+epsilon) * self.shrink_percentage))
             important_indices_list.append(important_indices)
+            attn_sums.append(attn_sum)
                                    
-        return outputs, important_indices_list
+        return outputs, important_indices_list, attn_sums
 
     
 
@@ -223,7 +225,7 @@ class RobertaAttention(nn.Module):
         past_key_value: Optional[Tuple[Tuple[torch.FloatTensor]]] = None,
         output_attentions: Optional[bool] = False,
     ) -> Tuple[torch.Tensor]:
-        self_outputs, important_indices_list = self.self(
+        self_outputs, important_indices_list, attn_sums = self.self(
             hidden_states,
             attention_mask,
             head_mask,
@@ -234,7 +236,7 @@ class RobertaAttention(nn.Module):
         )
         attention_output = self.output(self_outputs[0], hidden_states)            
         outputs = (attention_output,) + self_outputs[1:]  # add attentions if we output them
-        return outputs, important_indices_list
+        return outputs, important_indices_list, attn_sums
     
     
 class RobertaLayer(nn.Module):
@@ -267,7 +269,7 @@ class RobertaLayer(nn.Module):
 #         print('hidden_states', hidden_states.size())
         self_attn_past_key_value = past_key_value[:2] if past_key_value is not None else None
 #         print(f"hidden_states in normallayer: {hidden_states.shape}")
-        self_attention_outputs, _ = self.attention(
+        self_attention_outputs, _, _ = self.attention(
             hidden_states,
             attention_mask,
             head_mask,
@@ -359,7 +361,7 @@ class RobertaCustomLayer(nn.Module):
         # decoder uni-directional self-attention cached key/values tuple is at positions 1,2
         self_attn_past_key_value = past_key_value[:2] if past_key_value is not None else None
 #         print(f"hidden_states in customlayer: {hidden_states.shape}")
-        self_attention_outputs, important_indices_list = self.attention(
+        self_attention_outputs, important_indices_list, _ = self.attention(
             hidden_states,
             attention_mask,
             head_mask,
