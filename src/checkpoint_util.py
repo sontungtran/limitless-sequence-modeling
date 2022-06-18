@@ -33,7 +33,7 @@ def save_checkpoint(model, tokenizer,
     if checkpoint_filename in files:
         with open(os.path.join(model_dir, checkpoint_filename), 'r') as f:
             ckpt_info = json.load(f)
-            assert ckpt_info["config"] == current_config # Model config should be the same
+            assert ckpt_info["config"] == current_config, f"Model config should be the same: {ckpt_info['config']} and {current_config}" 
     else:
         ckpt_info = {"config": current_config, "info": []}
     print(f"Length of current stats file: {len(ckpt_info['info'])}\n")
@@ -84,7 +84,8 @@ def load_checkpoint(model_dir, name, current_config, model_config):
         # TODO: If can't load, create new ckpt?
         with open(os.path.join(model_dir, checkpoint_filename), 'r') as f:
             ckpt_info = json.load(f)
-            assert ckpt_info["config"] == current_config # Model config should be the same but commented out for now
+            # print(ckpt_info["config"])
+            assert ckpt_info["config"] == current_config, f"Model config should be the same: {ckpt_info['config']} and {current_config}" #but commented out for now
     else:
 #         raise Exception(f"Can't find checkpoint: \"{checkpoint_filename}\"")
         print(f"Can't find checkpoint: \"{checkpoint_filename}\", using downloaded pretrained model")
